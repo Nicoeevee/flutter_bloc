@@ -6,10 +6,10 @@ abstract class TimerEvent extends Equatable {
   TimerEvent([List props = const []]);
 }
 
-class Start extends TimerEvent {
+class StartEvent extends TimerEvent {
   final int duration;
 
-  Start({@required this.duration}) : super([duration]);
+  StartEvent({@required this.duration}) : super([duration]);
 
   @override
   List<Object> get props => props;
@@ -18,7 +18,7 @@ class Start extends TimerEvent {
   String toString() => "Start { duration: $duration }";
 }
 
-class Pause extends TimerEvent {
+class PauseEvent extends TimerEvent {
   @override
   String toString() => "Pause";
 
@@ -26,7 +26,7 @@ class Pause extends TimerEvent {
   List<Object> get props => props;
 }
 
-class Resume extends TimerEvent {
+class ResumeEvent extends TimerEvent {
   @override
   String toString() => "Resume";
 
@@ -34,7 +34,7 @@ class Resume extends TimerEvent {
   List<Object> get props => props;
 }
 
-class Reset extends TimerEvent {
+class ResetEvent extends TimerEvent {
   @override
   String toString() => "Reset";
 
@@ -42,10 +42,10 @@ class Reset extends TimerEvent {
   List<Object> get props => props;
 }
 
-class Tick extends TimerEvent {
+class TickEvent extends TimerEvent {
   final int duration;
 
-  Tick({@required this.duration}) : super([duration]);
+  TickEvent({@required this.duration}) : super([duration]);
 
   @override
   String toString() => "Tick { duration: $duration }";

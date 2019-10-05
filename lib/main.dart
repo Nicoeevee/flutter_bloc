@@ -88,43 +88,44 @@ class Actions extends StatelessWidget {
 
   List<Widget> _mapStateToActionButton({TimerBloc timerBloc}) {
     final TimerState state = timerBloc.currentState;
-    if (state is Ready) {
+    if (state is ReadyState) {
       return [
         FloatingActionButton(
           child: Icon(Icons.play_arrow),
-          onPressed: () => timerBloc.dispatch(Start(duration: state.duration)),
+          onPressed: () =>
+              timerBloc.dispatch(StartEvent(duration: state.duration)),
         ),
       ];
     }
-    if (state is Running) {
+    if (state is RunningState) {
       return [
         FloatingActionButton(
           child: Icon(Icons.pause),
-          onPressed: () => timerBloc.dispatch(Pause()),
+          onPressed: () => timerBloc.dispatch(PauseEvent()),
         ),
         FloatingActionButton(
           child: Icon(Icons.replay),
-          onPressed: () => timerBloc.dispatch(Reset()),
+          onPressed: () => timerBloc.dispatch(ResetEvent()),
         ),
       ];
     }
-    if (state is Paused) {
+    if (state is PausedState) {
       return [
         FloatingActionButton(
           child: Icon(Icons.play_arrow),
-          onPressed: () => timerBloc.dispatch(Resume()),
+          onPressed: () => timerBloc.dispatch(ResumeEvent()),
         ),
         FloatingActionButton(
           child: Icon(Icons.replay),
-          onPressed: () => timerBloc.dispatch(Reset()),
+          onPressed: () => timerBloc.dispatch(ResetEvent()),
         ),
       ];
     }
-    if (state is Finished) {
+    if (state is FinishedState) {
       return [
         FloatingActionButton(
           child: Icon(Icons.replay),
-          onPressed: () => timerBloc.dispatch(Reset()),
+          onPressed: () => timerBloc.dispatch(ResetEvent()),
         ),
       ];
     }
