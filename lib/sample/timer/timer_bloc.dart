@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc_test/sample/timer/ticker.dart';
 
 import './bloc.dart';
 
@@ -20,9 +19,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   TimerState get initialState => ReadyState(_duration);
 
   @override
-  Stream<TimerState> mapEventToState(
-    TimerEvent event,
-  ) async* {
+  Stream<TimerState> mapEventToState(TimerEvent event) async* {
     if (event is StartEvent) {
       //yield* 递归优化
       yield* _mapStartToState(event);
@@ -49,11 +46,11 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   ///dispose，以便在TimerBloc被释放时取消_tickerSubscription。最后，
   ///监听_ticker.tick Stream ，每tick一次就发送一个Tick事件和剩余持续时间
   Stream<TimerState> _mapStartToState(StartEvent start) async* {
-    yield RunningState(start.duration);
+    yield RunningState(start.totalTime);
     _tickerSubscription?.cancel();
     _tickerSubscription =
-        _ticker.tick(duration: start.duration).listen((duration) {
-          dispatch(TickEvent(duration: duration));
+        _ticker.tick(totalTime: start.totalTime).listen((remainingTime) {
+          dispatch(TickEvent(duration: remainingTime));
     });
   }
 

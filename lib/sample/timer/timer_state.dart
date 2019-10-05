@@ -6,12 +6,14 @@ import 'package:meta/meta.dart';
 abstract class TimerState extends Equatable {
   final int duration;
 
+  ///传入剩余时间
   TimerState(this.duration, [List props = const []]) : super();
 
   @override
   List<Object> get props => [duration];
 }
 
+///就绪状态
 class ReadyState extends TimerState {
   ReadyState(int duration) : super(duration);
 
@@ -19,6 +21,7 @@ class ReadyState extends TimerState {
   String toString() => 'Ready { duration: $duration }';
 }
 
+///暂停状态
 class PausedState extends TimerState {
   PausedState(int duration) : super(duration);
 
@@ -26,6 +29,7 @@ class PausedState extends TimerState {
   String toString() => 'Paused { duration: $duration }';
 }
 
+///运行状态
 class RunningState extends TimerState {
   RunningState(int duration) : super(duration);
 
@@ -33,6 +37,7 @@ class RunningState extends TimerState {
   String toString() => 'Running { duration: $duration }';
 }
 
+///完成状态
 class FinishedState extends TimerState {
   FinishedState() : super(0);
 

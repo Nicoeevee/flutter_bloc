@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_test/sample/timer/ticker.dart';
-import 'package:flutter_bloc_test/sample/timer/timer_bloc.dart';
-import 'package:flutter_bloc_test/sample/timer/timer_event.dart';
-import 'package:flutter_bloc_test/sample/timer/timer_state.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+
+import './sample/timer/bloc.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,21 +46,20 @@ class Timer extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: BlocBuilder<TimerBloc, TimerState>(
-                    builder: (context, state) {
-                      final String minutesStr = ((state.duration / 60) % 60)
-                          .floor()
-                          .toString()
-                          .padLeft(2, '0');
-                      final String secondsStr = (state.duration % 60)
-                          .floor()
-                          .toString()
-                          .padLeft(2, '0');
-                      return Text(
-                        '$minutesStr:$secondsStr',
-                        style: Timer.timerTextStyle,
-                      );
-                    },
-                  ),
+                      builder: (context, state) {
+                        final String minutesStr = ((state.duration / 60) % 60)
+                            .floor()
+                            .toString()
+                            .padLeft(2, '0');
+                        final String secondsStr = (state.duration % 60)
+                            .floor()
+                            .toString()
+                            .padLeft(2, '0');
+                        return Text(
+                          '$minutesStr:$secondsStr',
+                          style: Timer.timerTextStyle,
+                        );
+                      }),
                 ),
                 BlocBuilder<TimerBloc, TimerState>(
                   builder: (context, state) => Actions(),
@@ -93,8 +90,8 @@ class Actions extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.play_arrow),
           onPressed: () =>
-              timerBloc.dispatch(StartEvent(duration: state.duration)),
-        ),
+              timerBloc.dispatch(StartEvent(totalTime: state.duration)),
+        )
       ];
     }
     if (state is RunningState) {
@@ -106,7 +103,7 @@ class Actions extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.replay),
           onPressed: () => timerBloc.dispatch(ResetEvent()),
-        ),
+        )
       ];
     }
     if (state is PausedState) {
@@ -118,7 +115,7 @@ class Actions extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.replay),
           onPressed: () => timerBloc.dispatch(ResetEvent()),
-        ),
+        )
       ];
     }
     if (state is FinishedState) {
@@ -126,7 +123,7 @@ class Actions extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.replay),
           onPressed: () => timerBloc.dispatch(ResetEvent()),
-        ),
+        )
       ];
     }
     return [];

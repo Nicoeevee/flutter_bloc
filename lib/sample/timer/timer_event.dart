@@ -6,18 +6,21 @@ abstract class TimerEvent extends Equatable {
   TimerEvent([List props = const []]);
 }
 
+///开始事件
+///传入总时间
 class StartEvent extends TimerEvent {
-  final int duration;
+  final int totalTime;
 
-  StartEvent({@required this.duration}) : super([duration]);
+  StartEvent({@required this.totalTime}) : super([totalTime]);
 
   @override
   List<Object> get props => props;
 
   @override
-  String toString() => "Start { duration: $duration }";
+  String toString() => "Start { totalTime: $totalTime }";
 }
 
+///暂停事件
 class PauseEvent extends TimerEvent {
   @override
   String toString() => "Pause";
@@ -26,6 +29,7 @@ class PauseEvent extends TimerEvent {
   List<Object> get props => props;
 }
 
+///恢复事件
 class ResumeEvent extends TimerEvent {
   @override
   String toString() => "Resume";
@@ -34,6 +38,7 @@ class ResumeEvent extends TimerEvent {
   List<Object> get props => props;
 }
 
+///重置事件
 class ResetEvent extends TimerEvent {
   @override
   String toString() => "Reset";
@@ -42,6 +47,8 @@ class ResetEvent extends TimerEvent {
   List<Object> get props => props;
 }
 
+///秒进事件
+///传入剩余时间
 class TickEvent extends TimerEvent {
   final int duration;
 
