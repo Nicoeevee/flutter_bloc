@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_test/sample/infinite_list/models/models.dart';
 
 import 'bloc.dart';
 
@@ -39,12 +40,10 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               return index >= state.posts.length
-                  ? BottomLoader()
+                  ? state.hasReachedMax ? BottomLoaderRunOut() : BottomLoader()
                   : PostWidget(post: state.posts[index]);
             },
-            itemCount: state.hasReachedMax
-                ? state.posts.length
-                : state.posts.length + 1,
+            itemCount: state.posts.length + 1,
             controller: _scrollController,
           );
         }
@@ -65,8 +64,15 @@ class _HomePageState extends State<HomePage> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _postBloc.dispatch(FetchEvent());
+      _postBloc.dispatch(FetchMoreEvent());
     }
+  }
+}
+
+class BottomLoaderRunOut extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text('帖子加载完毕'));
   }
 }
 
