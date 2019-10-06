@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/sample/infinite_list/models/models.dart';
@@ -114,10 +113,10 @@ class PostWidget extends StatelessWidget {
   }
 }
 
-class SimpleBlocDelegate extends BlocDelegate {
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    print(transition);
-  }
-}
+//class SimpleBlocDelegate extends BlocDelegate {
+//  @override
+//  void onTransition(Bloc bloc, Transition transition) {
+//    super.onTransition(bloc, transition);
+//    print(transition);
+//  }
+//}
