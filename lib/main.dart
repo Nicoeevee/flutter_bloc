@@ -1,26 +1,34 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_test/repositories/repository.dart';
 import 'package:flutter_bloc_test/sample/login_sample/common/common.dart';
 import 'package:flutter_bloc_test/sample/login_sample/home/home_page.dart'
 as authPage;
 import 'package:flutter_bloc_test/sample/login_sample/login/login_page.dart';
 import 'package:flutter_bloc_test/sample/user_repository/lib/src/user_repository.dart';
 
+import 'repositories/dio_request.dart';
 import 'sample/login_sample/authentication/authentication.dart';
 import 'sample/login_sample/splash/splash.dart';
+import 'sample/weather_sample/widget/app.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final UserRepository userRepository = UserRepository();
-  runApp(BlocProvider<AuthenticationBloc>(
-    builder: (context) {
-      ///应用开始事件
-      return AuthenticationBloc(userRepository: userRepository)
-        ..dispatch(AppStartedEvent());
-    },
-    child: MyApp(userRepository: userRepository),
-  ));
+//  final UserRepository userRepository = UserRepository();
+  final WeatherRepository weatherRepository =
+  WeatherRepository(weatherApiClient: WeatherApiClient(dio: dioClient()));
+  runApp(
+//    BlocProvider<AuthenticationBloc>(
+//      builder: (context) {
+//        ///应用开始事件
+//        return AuthenticationBloc(userRepository: userRepository)
+//          ..dispatch(AppStartedEvent());
+//      },
+//      child: MyApp(userRepository: userRepository),
+//    ),
+    App(weatherRepository: weatherRepository),
+  );
 }
 
 class SimpleBlocDelegate extends BlocDelegate {
