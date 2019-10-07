@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/sample/weather_sample/weather/bloc.dart';
@@ -12,6 +14,14 @@ class Weather extends StatefulWidget {
 }
 
 class _WeatherState extends State<Weather> {
+  Completer<void> _refreshCompleter;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshCompleter = Completer<void>();
+  }
+
   @override
   Widget build(BuildContext context) {
     final weatherBloc = BlocProvider.of<WeatherBloc>(context);
@@ -35,23 +45,28 @@ class _WeatherState extends State<Weather> {
         child: BlocBuilder<WeatherBloc, WeatherState>(
           builder: (context, state) {
             if (state is WeatherEmptyState) {
-              return Center(
-                child: Text('请选择一个位置'),
-              );
+              return Center(child: Text('请选择一个位置'));
             }
             if (state is WeatherLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Center(child: CircularProgressIndicator());
             }
             if (state is WeatherLoadedState) {
+              _refreshCompleter?.complete();
+              _refreshCompleter = Completer();
               final weather = state.weather;
-              return ListView(
-                children: <Widget>[
-                  Center(child: Location(location: weather.location)),
-                  Center(child: LastUpdated(dateTime: weather.lastUpdated)),
-                  Center(child: CombinedWeatherTemperature(weather: weather))
-                ],
+              return RefreshIndicator(
+                onRefresh: () {
+                  weatherBloc.dispatch(
+                      RefreshWeatherEvent(city: state.weather.location));
+                  return _refreshCompleter.future;
+                },
+                child: ListView(
+                  children: <Widget>[
+                    Center(child: Location(location: weather.location)),
+                    Center(child: LastUpdated(dateTime: weather.lastUpdated)),
+                    Center(child: CombinedWeatherTemperature(weather: weather))
+                  ],
+                ),
               );
             }
             if (state is WeatherErrorState) {
